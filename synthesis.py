@@ -18,11 +18,11 @@ def export_synthesis(user, start_date, end_date, ordinate_timelog):
     end_date_str = end_date.strftime("%Y-%m-%d")
     
     # Create the directory if it doesn't exist
-    os.makedirs("/home/matthieu/Bureau/gitproject/fiches_de_synthese", exist_ok=True)
+    os.makedirs("fiches_de_synthese", exist_ok=True)
     
     # Format the current date for the filename
     current_date = datetime.datetime.now().strftime("%Y%m%d")
-    filename = f"/home/matthieu/Bureau/gitproject/fiches_de_synthese/{user}_synthese_label_{current_date}.md"
+    filename = f"fiches_de_synthese/{user}_synthese_label_{current_date}.md"
     
     # Calculate overall total time spent across all boards
     total_time_seconds = 0

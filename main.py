@@ -4,7 +4,6 @@ from tkinter import ttk, messagebox
 from tkcalendar import DateEntry
 from datetime import datetime
 import threading
-import zipper
 
 names = ["bonhomki", "bournyma", "cantinto", "digoutan", "alonsoma", "bricauma", "besseama", "tremblma"]
 
