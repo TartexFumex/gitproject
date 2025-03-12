@@ -1,14 +1,14 @@
-import datetime
+from datetime import datetime
 import os
 
-def export_synthesis(user, start_date, end_date, ordinate_timelog):
-    start_date_str = start_date.strftime("%Y-%m-%d")
-    end_date_str = end_date.strftime("%Y-%m-%d")
+def export_synthesis(user, start_date: datetime, end_date: datetime, ordinate_timelog):
+    start_date_str = start_date.strftime("%d/%m/%Y")
+    end_date_str = end_date.strftime("%d/%m/%Y")
     
     os.makedirs("fiches_de_synthese", exist_ok=True)
     
     # Format the current date for the filename
-    current_date = datetime.datetime.now().strftime("%Y%m%d")
+    current_date = datetime.now().strftime("%Y%m%d")
     filename = f"fiches_de_synthese/{user}_synthese_label_{current_date}.md"
     
     # Calculate overall total time spent across all boards
@@ -87,7 +87,7 @@ def export_synthesis(user, start_date, end_date, ordinate_timelog):
             f.write(f"\n**Total {board_name}:** `{time_str_total}` | **{percentage:.1f}%** du temps global\n\n")
 
         # Add footer with generation information
-        f.write(f"\n\n---\n*Rapport généré le {datetime.datetime.now().strftime('%d/%m/%Y à %H:%M')}*")
+        f.write(f"\n\n---\n*Rapport généré le {datetime.now().strftime('%d/%m/%Y à %H:%M')}*")
 
     return filename
 
