@@ -165,7 +165,7 @@ class Gitlab:
             for board in self.board_list:
                 board_name = board["name"]
                 for label in timelog["labels"]:
-                    if label in list(ordinate_timelog[board_name].keys()) and label not in self.EXCLUDE_LABEL:
+                    if (label in list(ordinate_timelog[board_name].keys())) and (label not in self.EXCLUDE_LABEL) and (label != board_name):
                         ordinate_timelog[board_name][label]["time_spend"] += timelog["time_spend"]
                         ordinate_timelog[board_name][label]["issues"].append(timelog["issue_name"])
                         break
