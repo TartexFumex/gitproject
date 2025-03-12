@@ -2,22 +2,9 @@ import datetime
 import os
 
 def export_synthesis(user, start_date, end_date, ordinate_timelog):
-    """
-    Generate and export a synthesis report based on GitLab time logs.
-    
-    Args:
-        user: The GitLab username
-        start_date: The start date for the report period
-        end_date: The end date for the report period
-        ordinate_timelog: Organized time log data by board and label
-        
-    Returns:
-        str: Path to the generated file
-    """
     start_date_str = start_date.strftime("%Y-%m-%d")
     end_date_str = end_date.strftime("%Y-%m-%d")
     
-    # Create the directory if it doesn't exist
     os.makedirs("fiches_de_synthese", exist_ok=True)
     
     # Format the current date for the filename
@@ -40,20 +27,25 @@ def export_synthesis(user, start_date, end_date, ordinate_timelog):
                     all_labels_time[label_name] = time_spend
     
     with open(filename, "w") as f:
-        # Write the header
-        f.write(f"# Fiche de Synthèse - Période du {start_date_str} au {end_date_str}\n\n")
+        # Write the header with improved formatting
+        f.write(f"# Fiche de Synthèse\n\n")
+        f.write(f"## 📊 Informations générales\n\n")
+        f.write(f"* **Période:** Du {start_date_str} au {end_date_str}\n")
+        f.write(f"* **Utilisateur:** {user}\n\n")
         
-        # Write the time per label section
-        f.write("## 🏷️ Temps total\n\n")
+        # Write the time per label section with better formatting
+        f.write("## ⏱️ Temps total\n\n")
         
-        # Calculate and write total
+        # Calculate and write total with better format
         total_hours = total_time_seconds // 3600
         total_minutes = (total_time_seconds % 3600) // 60
-        total_time_str = f"{total_hours}.0h {total_minutes}.0m"
+        total_time_str = f"{total_hours}h {total_minutes:02d}min"
         
-        f.write(f"> **TOTAL:** **{total_time_str}**\n\n")
+        f.write(f"**TOTAL:** `{total_time_str}`\n\n")
         
         # Optional: Add board-specific sections if requested
+        f.write("## 📋 Détails par tableau\n\n")
+        
         for board_name, labels in ordinate_timelog.items():
             # Calculate total time for this board
             board_total_time = sum(label_data["time_spend"] for label_data in labels.values())
@@ -63,11 +55,11 @@ def export_synthesis(user, start_date, end_date, ordinate_timelog):
                 continue
             
             # Write board section header
-            f.write(f"## {board_name}\n\n")
+            f.write(f"### {board_name}\n\n")
             
             # Create table for this board
-            f.write("| Label | Temps |\n")
-            f.write("|-------|-------|\n")
+            f.write("| Label | Temps | % du tableau |\n")
+            f.write("|-------|-------|-------------|\n")
             
             # Sort labels by time spent (descending)
             sorted_board_labels = sorted(
@@ -81,17 +73,21 @@ def export_synthesis(user, start_date, end_date, ordinate_timelog):
                 time_spend = label_data["time_spend"]
                 hours = time_spend // 3600
                 minutes = (time_spend % 3600) // 60
-                time_str = f"{hours}.0h {minutes}.0m"
+                time_str = f"{hours}h {minutes:02d}min"
+                percentage_of_board = (time_spend / board_total_time * 100) if board_total_time > 0 else 0
                 
-                f.write(f"| {label_name} | {time_str} |\n")
+                f.write(f"| {label_name} | `{time_str}` | {percentage_of_board:.1f}% |\n")
             
-            # Write board total
+            # Write board total with better formatting
             hours_total = board_total_time // 3600
             minutes_total = (board_total_time % 3600) // 60
-            time_str_total = f"{hours_total}.0h {minutes_total}.0m"
+            time_str_total = f"{hours_total}h {minutes_total:02d}min"
             percentage = (board_total_time / total_time_seconds * 100) if total_time_seconds > 0 else 0
 
-            f.write(f"> **TOTAL {board_name}:** **{time_str_total}**, soit **{percentage:.1f}%** du temps total\n\n")
+            f.write(f"\n**Total {board_name}:** `{time_str_total}` | **{percentage:.1f}%** du temps global\n\n")
+
+        # Add footer with generation information
+        f.write(f"\n\n---\n*Rapport généré le {datetime.datetime.now().strftime('%d/%m/%Y à %H:%M')}*")
 
     return filename
 
