@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 from tkcalendar import DateEntry
 from datetime import datetime
-import threading
+import threading, zipper
 
 names = ["bonhomki", "bournyma", "cantinto", "digoutan", "alonsoma", "bricauma", "besseama", "tremblma"]
 
@@ -65,7 +65,7 @@ class GitlabSynthesisApp:
     
     def create_users_frame(self):
         users_frame = ttk.LabelFrame(self.root, text="Sélection des utilisateurs")
-        users_frame.pack(fill="x", padx=10, pady=5)  # Changed from fill="both", expand=True to fill="x"
+        users_frame.pack(fill="x", padx=10, pady=5)
         
         # Boutons pour tout sélectionner/désélectionner
         btn_frame = ttk.Frame(users_frame)
@@ -79,10 +79,10 @@ class GitlabSynthesisApp:
         
         # Frame pour la liste des utilisateurs avec scrollbar
         list_frame = ttk.Frame(users_frame)
-        list_frame.pack(fill="x", padx=5, pady=5)  # Changed from fill="both", expand=True to fill="x"
+        list_frame.pack(fill="x", padx=5, pady=5)
         
-        self.users_canvas = tk.Canvas(list_frame, height=150)  # Added fixed height
-        self.users_canvas.pack(side="left", fill="x", expand=True)  # Changed fill="both" to fill="x"
+        self.users_canvas = tk.Canvas(list_frame, height=150)
+        self.users_canvas.pack(side="left", fill="x", expand=True)
         
         self.users_inner_frame = ttk.Frame(self.users_canvas)
         self.users_canvas.create_window((0, 0), window=self.users_inner_frame, anchor="nw")
@@ -172,21 +172,11 @@ class GitlabSynthesisApp:
                 
                 git.export_synthesis(user)
             
-            self.progress_var.set(90)
-            self.status_var.set("Compression des fichiers...")
-            self.root.update_idletasks()
-            
-            # Zip all the synthesis files with date range in filename
-            success, message = zipper.zip_synthesis_files(start_date, end_date)
-            
             self.progress_var.set(100)
             
-            if success:
-                self.status_var.set("Génération et compression terminées avec succès!")
-                messagebox.showinfo("Succès", f"Toutes les synthèses ont été générées avec succès et compressées.\n\n{message}")
-            else:
-                self.status_var.set("Génération terminée, mais erreur de compression.")
-                messagebox.showwarning("Attention", f"Synthèses générées mais erreur lors de la compression : {message}")
+            self.status_var.set("Génération terminée avec succès!")
+            messagebox.showinfo("Succès", f"Toutes les synthèses ont été générées avec succès.")
+
             
         except Exception as e:
             self.status_var.set(f"Erreur: {str(e)}")
