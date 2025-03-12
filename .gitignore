@@ -1,6 +1,6 @@
 __pycache__/
 _fiches_de_synthese/
 fiches_de_synthese/
-/.venv/
+.venv/*
 old.py
 test.json
