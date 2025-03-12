@@ -7,6 +7,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 class Gitlab:
     GITLAB_URL = "https://172.24.7.8"
     GRAPHQL_TOKEN = "glpat-KecVaLioJqSG8fpRMjtS"
+    EXCLUDE_LABEL = ["RéunionProjet", "Consulting"]
 
     def __init__(self, start_date:str, end_date:str, project = "e4e-fise/s8-se-prose/2025/fortil/common"):
         self.start_date = datetime.datetime.strptime(start_date, "%Y-%m-%d")
@@ -164,7 +165,7 @@ class Gitlab:
             for board in self.board_list:
                 board_name = board["name"]
                 for label in timelog["labels"]:
-                    if label in list(ordinate_timelog[board_name].keys()):
+                    if label in list(ordinate_timelog[board_name].keys()) and label not in self.EXCLUDE_LABEL:
                         ordinate_timelog[board_name][label]["time_spend"] += timelog["time_spend"]
                         ordinate_timelog[board_name][label]["issues"].append(timelog["issue_name"])
                         break
@@ -183,5 +184,7 @@ class Gitlab:
         )
 
 if __name__ == "__main__":
-    gitlab = Gitlab("2025-03-01", "2025-03-12")
-    gitlab.export_synthesis("digoutan")
+    gitlab = Gitlab("2025-02-01", "2025-03-12")
+    import json
+    open("test.json", "w").write(json.dumps(gitlab.fetch_timelogs_from_api("digoutan")))
+    #gitlab.export_synthesis("digoutan")
