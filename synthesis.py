@@ -66,8 +66,8 @@ def export_synthesis(user, start_date, end_date, ordinate_timelog):
             f.write(f"## {board_name}\n\n")
             
             # Create table for this board
-            f.write("| Label | Temps | Issues |\n")
-            f.write("|-------|-------|---------|\n")
+            f.write("| Label | Temps |\n")
+            f.write("|-------|-------|\n")
             
             # Sort labels by time spent (descending)
             sorted_board_labels = sorted(
@@ -83,21 +83,15 @@ def export_synthesis(user, start_date, end_date, ordinate_timelog):
                 minutes = (time_spend % 3600) // 60
                 time_str = f"{hours}.0h {minutes}.0m"
                 
-                # Format issues list
-                issues_str = ", ".join(sorted(set(label_data["issues"])))
-                if len(issues_str) > 40:
-                    issues_str = issues_str[:37] + "..."
-                
-                f.write(f"| {label_name} | {time_str} | {issues_str} |\n")
+                f.write(f"| {label_name} | {time_str} |\n")
             
             # Write board total
             hours_total = board_total_time // 3600
             minutes_total = (board_total_time % 3600) // 60
             time_str_total = f"{hours_total}.0h {minutes_total}.0m"
             percentage = (board_total_time / total_time_seconds * 100) if total_time_seconds > 0 else 0
-            
-            f.write("|-------|-------|---------|\n")
-            f.write(f"| **TOTAL {board_name}** | **{time_str_total}** | **{percentage:.1f}% du temps total** |\n\n")
+
+            f.write(f"> **TOTAL {board_name}:** **{time_str_total}**, soit **{percentage:.1f}%** du temps total\n\n")
 
     return filename
 
