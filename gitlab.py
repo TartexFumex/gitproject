@@ -133,6 +133,9 @@ class Gitlab:
                 return "Error"
 
             for r in response.json()["data"]["timelogs"]["edges"]:
+                if not r["node"]["issue"]:
+                    continue
+                
                 issue_id = r["node"]["issue"]["iid"]
 
                 if issue_id not in timelog.keys():
