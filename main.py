@@ -21,7 +21,7 @@ class GitlabSynthesisApp:
         # Variables
         self.date_start_var = tk.StringVar()
         self.date_end_var = tk.StringVar()
-        self.project_var = tk.StringVar(value="e4e-fise/s8-se-prose/2025/fortil/common")
+        self.project_var = tk.StringVar(value=os.getenv("PROJECT_PATH"))
         self.user_vars = {name: tk.BooleanVar(value=True) for name in names}
  
         # Création des frames
