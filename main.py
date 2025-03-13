@@ -9,7 +9,8 @@ import os
 
 load_dotenv()
 
-names = os.getenv("NAMES").split(",") 
+names = os.getenv("NAMES").split(",")
+names.sort()
 
 class GitlabSynthesisApp:
     def __init__(self, root):
