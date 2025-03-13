@@ -4,8 +4,12 @@ from tkinter import ttk, messagebox
 from tkcalendar import DateEntry
 from datetime import datetime
 import threading, zipper
+from dotenv import load_dotenv
+import os
 
-names = ["bonhomki", "bournyma", "cantinto", "digoutan", "alonsoma", "bricauma", "besseama", "tremblma"]
+load_dotenv()
+
+names = os.getenv("NAMES").split(",") 
 
 class GitlabSynthesisApp:
     def __init__(self, root):

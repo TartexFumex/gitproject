@@ -4,3 +4,4 @@ fiches_de_synthese/
 .venv/*
 old.py
 test.json
+.env

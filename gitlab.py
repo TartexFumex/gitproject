@@ -1,15 +1,18 @@
 import urllib3, datetime, requests
-# Add the import for our new module
 from synthesis import export_synthesis
+from dotenv import load_dotenv
+import os
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-class Gitlab:
-    GITLAB_URL = "https://172.24.7.8"
-    GRAPHQL_TOKEN = "glpat-KecVaLioJqSG8fpRMjtS"
-    EXCLUDE_LABEL = ["RéunionProjet", "Consulting", "RéunionClient"]
+load_dotenv()
 
-    def __init__(self, start_date:str, end_date:str, project = "e4e-fise/s8-se-prose/2025/fortil/common"):
+class Gitlab:
+    GITLAB_URL = os.getenv("GITLAB_URL")
+    GRAPHQL_TOKEN = os.getenv("GRAPHQL_TOKEN")
+    EXCLUDE_LABEL = os.getenv("EXCLUDE_LABEL").split(",") if os.getenv("EXCLUDE_LABEL") else []
+
+    def __init__(self, start_date:str, end_date:str, project:str):
         self.start_date = datetime.datetime.strptime(start_date, "%Y-%m-%d")
         self.end_date = datetime.datetime.strptime(end_date, "%Y-%m-%d")
         self.project_path = project
