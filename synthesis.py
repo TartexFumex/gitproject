@@ -58,7 +58,7 @@ def export_synthesis(user, start_date: datetime, end_date: datetime, ordinate_ti
             f.write(f"### {board_name}\n\n")
             
             # Create table for this board
-            f.write("| Label | Temps | % du tableau |\n")
+            f.write("| Label | Temps | % de contribution |\n")
             f.write("|-------|-------|-------------|\n")
             
             # Sort labels by time spent (descending)
@@ -76,7 +76,7 @@ def export_synthesis(user, start_date: datetime, end_date: datetime, ordinate_ti
                 time_str = f"{hours}h {minutes:02d}min"
                 percentage_of_board = (time_spend / board_total_time * 100) if board_total_time > 0 else 0
                 
-                f.write(f"| {label_name} | `{time_str}` | {percentage_of_board:.1f}% |\n")
+                f.write(f"| {label_name} | `{time_str}` | A_REMPLACER % |\n")
             
             # Write board total with better formatting
             hours_total = board_total_time // 3600
