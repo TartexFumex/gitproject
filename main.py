@@ -2,7 +2,7 @@ import gitlab
 import tkinter as tk
 from tkinter import ttk, messagebox
 from tkcalendar import DateEntry
-from datetime import datetime
+from datetime import datetime, timedelta
 import threading, zipper
 from dotenv import load_dotenv
 import os
@@ -54,7 +54,7 @@ class GitlabSynthesisApp:
         
         # Initialisation des dates
         today = datetime.now()
-        seven_days_ago = today.replace(day=today.day-7)  # Soustrait 7 jours
+        seven_days_ago = today - timedelta(days=7)  # Soustrait 7 jours
         start_date.set_date(seven_days_ago)
         end_date.set_date(today)
         self.date_start_var.set(seven_days_ago.strftime('%Y-%m-%d'))
